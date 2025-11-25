@@ -103,7 +103,13 @@ export function Home() {
 
           {/* Quick action cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-slide-up">
-            <Card variant="glass" padding="lg" hoverable className="group">
+            <Card 
+              variant="glass" 
+              padding="lg" 
+              hoverable 
+              className="group cursor-pointer"
+              onClick={() => navigate('/discover?when=tonight')}
+            >
               <div className="flex items-start gap-4">
                 <div className="p-3 bg-primary/20 rounded-xl group-hover:bg-primary/30 transition-colors">
                   <SparklesIcon className="w-6 h-6 text-primary" />
@@ -113,13 +119,19 @@ export function Home() {
                     What should I do tonight?
                   </h3>
                   <p className="text-sm text-gray-400">
-                    Get AI-powered recommendations based on your mood
+                    Discover events happening tonight based on your preferences
                   </p>
                 </div>
               </div>
             </Card>
 
-            <Card variant="glass" padding="lg" hoverable className="group">
+            <Card 
+              variant="glass" 
+              padding="lg" 
+              hoverable 
+              className="group cursor-pointer"
+              onClick={() => navigate('/discover')}
+            >
               <div className="flex items-start gap-4">
                 <div className="p-3 bg-accent/20 rounded-xl group-hover:bg-accent/30 transition-colors">
                   <SearchIcon className="w-6 h-6 text-accent" />
@@ -135,7 +147,13 @@ export function Home() {
               </div>
             </Card>
 
-            <Card variant="glass" padding="lg" hoverable className="group">
+            <Card 
+              variant="glass" 
+              padding="lg" 
+              hoverable 
+              className="group cursor-pointer"
+              onClick={() => navigate('/discover?when=weekend')}
+            >
               <div className="flex items-start gap-4">
                 <div className="p-3 bg-purple-500/20 rounded-xl group-hover:bg-purple-500/30 transition-colors">
                   <CalendarIcon className="w-6 h-6 text-purple-400" />
@@ -151,7 +169,13 @@ export function Home() {
               </div>
             </Card>
 
-            <Card variant="glass" padding="lg" hoverable className="group">
+            <Card 
+              variant="glass" 
+              padding="lg" 
+              hoverable 
+              className="group cursor-pointer"
+              onClick={() => navigate('/discover?when=week')}
+            >
               <div className="flex items-start gap-4">
                 <div className="p-3 bg-orange-500/20 rounded-xl group-hover:bg-orange-500/30 transition-colors">
                   <span className="text-2xl">🔥</span>
@@ -234,15 +258,23 @@ export function Home() {
             )}
           </Card>
 
-          {/* Coming soon notice */}
+          {/* Quick explore link */}
           <div className="text-center py-8">
-            <Card variant="glass" padding="lg" className="inline-block">
+            <Card 
+              variant="glass" 
+              padding="lg" 
+              className="inline-block cursor-pointer group"
+              hoverable
+              onClick={() => navigate('/discover')}
+            >
               <div className="flex items-center gap-3">
-                <span className="text-3xl animate-pulse-soft">🚧</span>
+                <span className="text-3xl group-hover:scale-110 transition-transform">🎫</span>
                 <div className="text-left">
-                  <p className="font-semibold text-white">More features coming soon!</p>
+                  <p className="font-semibold text-white group-hover:text-primary transition-colors">
+                    Start exploring events!
+                  </p>
                   <p className="text-sm text-gray-400">
-                    SeatGeek integration, event search, and recommendations are on the way.
+                    Discover concerts, sports, theater, and more powered by SeatGeek.
                   </p>
                 </div>
               </div>
