@@ -54,13 +54,13 @@ export async function searchEvents(
     const data = parseComposioResult(result);
 
     return {
-      events: data.events || [],
-      meta: data.meta || {
+      events: (data.events || []) as SeatGeekEvent[],
+      meta: (data.meta || {
         total: 0,
         took: 0,
         page: params.page || 1,
         per_page: params.per_page || 20,
-      },
+      }) as SeatGeekSearchResponse["meta"],
     };
   } catch (error) {
     console.error("Error searching events:", error);
@@ -87,7 +87,7 @@ export async function getEventById(eventId: number): Promise<SeatGeekEvent | nul
     });
 
     const data = parseComposioResult(result);
-    return data || null;
+    return (data as unknown as SeatGeekEvent) || null;
   } catch (error) {
     console.error("Error getting event by ID:", error);
     throw error;
@@ -109,7 +109,7 @@ export async function getTaxonomies(): Promise<SeatGeekTaxonomyItem[]> {
     const result = await executeComposioAction(SEATGEEK_GET_TAXONOMIES_ACTION, {});
 
     const data = parseComposioResult(result);
-    return data.taxonomies || [];
+    return (data.taxonomies || []) as SeatGeekTaxonomyItem[];
   } catch (error) {
     console.error("Error getting taxonomies:", error);
     // Return default taxonomies if API fails

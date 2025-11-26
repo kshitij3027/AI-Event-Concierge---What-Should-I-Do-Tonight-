@@ -4,6 +4,7 @@ import { getEventById } from '../../services/api';
 import { formatEventDate, formatShortDate, getRelativeTime } from '../../lib/dateUtils';
 import { getTaxonomyIcon } from '../../lib/taxonomyMap';
 import { Button, Card } from '../../components/ui';
+import { SimilarEvents } from '../../components/recommendations';
 import type { Event } from '../../types/events';
 
 function BackIcon({ className = '' }: { className?: string }) {
@@ -401,6 +402,11 @@ export function EventDetails() {
             <p className="text-xs text-gray-400">Popularity</p>
             <p className="text-sm font-medium text-white">{Math.round((event.score || 0) * 100)}%</p>
           </Card>
+        </div>
+
+        {/* Similar Events */}
+        <div className="mt-10">
+          <SimilarEvents eventId={event.id} />
         </div>
       </div>
 

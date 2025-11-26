@@ -3,6 +3,9 @@ import type {
   EventSearchResponse,
   EventDetailResponse,
   TaxonomiesResponse,
+  RecommendationParams,
+  RecommendationResponse,
+  MoodParams,
 } from '../types/events';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
@@ -79,5 +82,104 @@ export async function getTaxonomies(): Promise<TaxonomiesResponse> {
  */
 export async function checkHealth(): Promise<{ status: string; composio_configured: boolean }> {
   return apiFetch('/api/health');
+}
+
+/**
+ * Get personalized recommendations
+ */
+export async function getRecommendations(params: RecommendationParams = {}): Promise<RecommendationResponse> {
+  const queryParams = new URLSearchParams();
+  
+  if (params.lat !== undefined) queryParams.set('lat', params.lat.toString());
+  if (params.lon !== undefined) queryParams.set('lon', params.lon.toString());
+  if (params.city) queryParams.set('city', params.city);
+  if (params.state) queryParams.set('state', params.state);
+  if (params.interests && params.interests.length > 0) {
+    queryParams.set('interests', params.interests.join(','));
+  }
+  if (params.perPage) queryParams.set('per_page', params.perPage.toString());
+  if (params.page) queryParams.set('page', params.page.toString());
+
+  const queryString = queryParams.toString();
+  const endpoint = `/api/recommendations${queryString ? `?${queryString}` : ''}`;
+  
+  return apiFetch<RecommendationResponse>(endpoint);
+}
+
+/**
+ * Get trending events
+ */
+export async function getTrendingEvents(params: RecommendationParams = {}): Promise<RecommendationResponse> {
+  const queryParams = new URLSearchParams();
+  
+  if (params.lat !== undefined) queryParams.set('lat', params.lat.toString());
+  if (params.lon !== undefined) queryParams.set('lon', params.lon.toString());
+  if (params.city) queryParams.set('city', params.city);
+  if (params.state) queryParams.set('state', params.state);
+  if (params.perPage) queryParams.set('per_page', params.perPage.toString());
+  if (params.page) queryParams.set('page', params.page.toString());
+
+  const queryString = queryParams.toString();
+  const endpoint = `/api/recommendations/trending${queryString ? `?${queryString}` : ''}`;
+  
+  return apiFetch<RecommendationResponse>(endpoint);
+}
+
+/**
+ * Get similar events to a specific event
+ */
+export async function getSimilarEvents(eventId: number, perPage: number = 6): Promise<RecommendationResponse> {
+  const queryParams = new URLSearchParams();
+  queryParams.set('per_page', perPage.toString());
+
+  return apiFetch<RecommendationResponse>(`/api/recommendations/similar/${eventId}?${queryParams.toString()}`);
+}
+
+/**
+ * Get hidden gem events
+ */
+export async function getHiddenGems(params: RecommendationParams = {}): Promise<RecommendationResponse> {
+  const queryParams = new URLSearchParams();
+  
+  if (params.lat !== undefined) queryParams.set('lat', params.lat.toString());
+  if (params.lon !== undefined) queryParams.set('lon', params.lon.toString());
+  if (params.city) queryParams.set('city', params.city);
+  if (params.state) queryParams.set('state', params.state);
+  if (params.interests && params.interests.length > 0) {
+    queryParams.set('interests', params.interests.join(','));
+  }
+  if (params.perPage) queryParams.set('per_page', params.perPage.toString());
+  if (params.page) queryParams.set('page', params.page.toString());
+
+  const queryString = queryParams.toString();
+  const endpoint = `/api/recommendations/hidden-gems${queryString ? `?${queryString}` : ''}`;
+  
+  return apiFetch<RecommendationResponse>(endpoint);
+}
+
+/**
+ * Get mood-based event recommendations
+ */
+export async function getMoodBasedEvents(
+  mood: MoodParams,
+  params: RecommendationParams = {}
+): Promise<RecommendationResponse> {
+  const queryParams = new URLSearchParams();
+  
+  queryParams.set('energy', mood.energy);
+  queryParams.set('social', mood.social);
+  queryParams.set('budget', mood.budget);
+  
+  if (params.lat !== undefined) queryParams.set('lat', params.lat.toString());
+  if (params.lon !== undefined) queryParams.set('lon', params.lon.toString());
+  if (params.city) queryParams.set('city', params.city);
+  if (params.state) queryParams.set('state', params.state);
+  if (params.perPage) queryParams.set('per_page', params.perPage.toString());
+  if (params.page) queryParams.set('page', params.page.toString());
+
+  const queryString = queryParams.toString();
+  const endpoint = `/api/recommendations/mood${queryString ? `?${queryString}` : ''}`;
+  
+  return apiFetch<RecommendationResponse>(endpoint);
 }
 

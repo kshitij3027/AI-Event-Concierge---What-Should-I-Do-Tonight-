@@ -3,7 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import eventsRouter from "./routes/events.js";
 import taxonomiesRouter from "./routes/taxonomies.js";
-import { isComposioConfigured, getInitializationError } from "./services/composio.js";
+import recommendationsRouter from "./routes/recommendations.js";
+import { isComposioConfigured } from "./services/composio.js";
 
 // Load environment variables
 dotenv.config();
@@ -24,6 +25,7 @@ app.use((req, _res, next) => {
 // Routes
 app.use("/api/events", eventsRouter);
 app.use("/api/taxonomies", taxonomiesRouter);
+app.use("/api/recommendations", recommendationsRouter);
 
 // Health check
 app.get("/api/health", (_req, res) => {
@@ -49,12 +51,8 @@ app.use((_req, res) => {
 
 // Error handler
 app.use(
-  (
-    err: Error,
-    _req: express.Request,
-    res: express.Response,
-    _next: express.NextFunction
-  ) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  (err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
     console.error("Unhandled error:", err);
     res.status(500).json({
       success: false,
@@ -73,10 +71,15 @@ app.listen(PORT, () => {
 
 📍 Running at: http://localhost:${PORT}
 📚 API Endpoints:
-   - GET /api/health          - Health check
-   - GET /api/events          - Search events
-   - GET /api/events/:id      - Get event details
-   - GET /api/taxonomies      - Get event categories
+   - GET /api/health                     - Health check
+   - GET /api/events                     - Search events
+   - GET /api/events/:id                 - Get event details
+   - GET /api/taxonomies                 - Get event categories
+   - GET /api/recommendations            - Personalized recommendations
+   - GET /api/recommendations/trending   - Trending events
+   - GET /api/recommendations/similar/:id - Similar events
+   - GET /api/recommendations/hidden-gems - Hidden gem events
+   - GET /api/recommendations/mood       - Mood-based events
 
 🔑 Composio API Key: ${composioConfigured ? "✓ Configured (Live Data)" : "✗ Missing (Mock Data Mode)"}
 ${!composioConfigured ? `

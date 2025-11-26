@@ -9,6 +9,7 @@ import ConfirmationStep from './pages/Onboarding/steps/ConfirmationStep'
 import Home from './pages/Home/Home'
 import Discover from './pages/Discover/Discover'
 import EventDetails from './pages/EventDetails/EventDetails'
+import Recommendations from './pages/Recommendations/Recommendations'
 
 function AppRoutes() {
   const { isOnboarded, isLoading } = useUser()
@@ -38,6 +39,7 @@ function AppRoutes() {
       <Route path="/home" element={isOnboarded ? <Home /> : <Navigate to="/onboarding" replace />} />
       <Route path="/discover" element={isOnboarded ? <Discover /> : <Navigate to="/onboarding" replace />} />
       <Route path="/event/:id" element={isOnboarded ? <EventDetails /> : <Navigate to="/onboarding" replace />} />
+      <Route path="/recommendations" element={isOnboarded ? <Recommendations /> : <Navigate to="/onboarding" replace />} />
     </Routes>
   )
 }

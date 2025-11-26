@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Card } from '../../components/ui';
 import { useUser } from '../../contexts/UserContext';
 import { getInterestOption, getGroupSizeOption } from '../../lib/constants';
+import { TrendingSection, MoodSelector } from '../../components/recommendations';
+import type { MoodParams, RecommendationParams } from '../../types/events';
 
 function SettingsIcon({ className = '' }: { className?: string }) {
   return (
@@ -56,6 +58,21 @@ export function Home() {
     }
   };
 
+  const handleMoodSelect = (mood: MoodParams) => {
+    const params = new URLSearchParams();
+    params.set('energy', mood.energy);
+    params.set('social', mood.social);
+    params.set('budget', mood.budget);
+    navigate(`/recommendations?${params.toString()}`);
+  };
+
+  const locationParams: RecommendationParams = {
+    lat: preferences?.location?.lat,
+    lon: preferences?.location?.lng,
+    city: preferences?.location?.city,
+    state: preferences?.location?.state,
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-surface">
       {/* Decorative background */}
@@ -101,6 +118,22 @@ export function Home() {
             </p>
           </div>
 
+          {/* Mood Selector Card */}
+          <Card variant="glass" padding="lg" className="animate-slide-up">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-primary/20 rounded-xl">
+                <SparklesIcon className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <h2 className="font-display text-lg font-semibold text-white">
+                  I'm feeling...
+                </h2>
+                <p className="text-sm text-gray-400">Let us match you with the perfect event</p>
+              </div>
+            </div>
+            <MoodSelector onMoodSelect={handleMoodSelect} compact />
+          </Card>
+
           {/* Quick action cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-slide-up">
             <Card 
@@ -108,7 +141,7 @@ export function Home() {
               padding="lg" 
               hoverable 
               className="group cursor-pointer"
-              onClick={() => navigate('/discover?when=tonight')}
+              onClick={() => navigate('/recommendations?mode=browse')}
             >
               <div className="flex items-start gap-4">
                 <div className="p-3 bg-primary/20 rounded-xl group-hover:bg-primary/30 transition-colors">
@@ -116,10 +149,10 @@ export function Home() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg text-white mb-1">
-                    What should I do tonight?
+                    ✨ For You
                   </h3>
                   <p className="text-sm text-gray-400">
-                    Discover events happening tonight based on your preferences
+                    AI-powered recommendations based on your preferences
                   </p>
                 </div>
               </div>
@@ -174,22 +207,27 @@ export function Home() {
               padding="lg" 
               hoverable 
               className="group cursor-pointer"
-              onClick={() => navigate('/discover?when=week')}
+              onClick={() => navigate('/recommendations?mode=hidden-gems')}
             >
               <div className="flex items-start gap-4">
                 <div className="p-3 bg-orange-500/20 rounded-xl group-hover:bg-orange-500/30 transition-colors">
-                  <span className="text-2xl">🔥</span>
+                  <span className="text-2xl">💎</span>
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg text-white mb-1">
-                    Trending now
+                    Hidden Gems
                   </h3>
                   <p className="text-sm text-gray-400">
-                    Popular events selling fast
+                    Quality events off the beaten path
                   </p>
                 </div>
               </div>
             </Card>
+          </div>
+
+          {/* Trending Events Section */}
+          <div className="animate-slide-up">
+            <TrendingSection location={locationParams} title="Trending Now 🔥" />
           </div>
 
           {/* Your preferences summary */}
@@ -259,22 +297,22 @@ export function Home() {
           </Card>
 
           {/* Quick explore link */}
-          <div className="text-center py-8">
+          <div className="text-center py-8 animate-slide-up">
             <Card 
               variant="glass" 
               padding="lg" 
               className="inline-block cursor-pointer group"
               hoverable
-              onClick={() => navigate('/discover')}
+              onClick={() => navigate('/recommendations')}
             >
               <div className="flex items-center gap-3">
-                <span className="text-3xl group-hover:scale-110 transition-transform">🎫</span>
+                <span className="text-3xl group-hover:scale-110 transition-transform">✨</span>
                 <div className="text-left">
                   <p className="font-semibold text-white group-hover:text-primary transition-colors">
-                    Start exploring events!
+                    Find your perfect event!
                   </p>
                   <p className="text-sm text-gray-400">
-                    Discover concerts, sports, theater, and more powered by SeatGeek.
+                    Take our mood quiz for AI-powered recommendations.
                   </p>
                 </div>
               </div>

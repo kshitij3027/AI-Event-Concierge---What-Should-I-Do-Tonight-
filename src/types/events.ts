@@ -133,3 +133,52 @@ export interface DiscoveryFilters {
   maxPrice?: number;
 }
 
+// Mood-based recommendation parameters
+export type EnergyLevel = 'high' | 'low' | 'any';
+export type SocialLevel = 'group' | 'intimate' | 'any';
+export type BudgetLevel = 'low' | 'medium' | 'high' | 'any';
+
+export interface MoodParams {
+  energy: EnergyLevel;
+  social: SocialLevel;
+  budget: BudgetLevel;
+}
+
+// Recommendation parameters
+export interface RecommendationParams {
+  lat?: number;
+  lon?: number;
+  city?: string;
+  state?: string;
+  interests?: string[];
+  perPage?: number;
+  page?: number;
+}
+
+// Recommendation response metadata
+export interface RecommendationMeta {
+  total: number;
+  page: number;
+  perPage: number;
+  source: 'recommendations' | 'search' | 'mock';
+  mood?: MoodParams;
+}
+
+// Recommendation response
+export interface RecommendationResponse {
+  success: boolean;
+  data: {
+    events: Event[];
+    meta: RecommendationMeta;
+  };
+}
+
+// Mood option for UI
+export interface MoodOption {
+  id: string;
+  label: string;
+  description: string;
+  icon: string;
+  value: EnergyLevel | SocialLevel | BudgetLevel;
+}
+
