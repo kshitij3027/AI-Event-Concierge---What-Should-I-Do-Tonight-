@@ -22,8 +22,5 @@
       "src": "/(.*)",
       "dest": "/$1"
     }
-  ],
-  "env": {
-    "COMPOSIO_API_KEY": "@composio-api-key"
-  }
+  ]
 }
